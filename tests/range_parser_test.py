@@ -10,3 +10,12 @@ from ..range_parser import parse_range
 ])
 def test_plus_notation(hand_range, expected):
     assert parse_range(hand_range) == expected
+
+
+@pytest.mark.parametrize("hand_range,expected", [
+    ('QQ', ['QQ']),
+    ('KK', ['KK']),
+    ('AK, KQ', ['AK', 'KQ']),
+])
+def test_single_combos(hand_range, expected):
+    assert parse_range(hand_range) == expected
