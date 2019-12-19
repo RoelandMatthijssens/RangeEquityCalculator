@@ -21,13 +21,9 @@ def compare_rank(h1, h2):
     if h22 > h12: return 1
 
 
-def is_plus_range(hand_range):
-    return '+' in hand_range
-
-
-def plus_range(hand):
-    max_rank = codes_to_rank_map['A']
-    min_rank = codes_to_rank_map[hand[0]]
+def min_to_max(top, bottom):
+    max_rank = codes_to_rank_map[top[0]]
+    min_rank = codes_to_rank_map[bottom[0]]
     result = []
     while min_rank <= max_rank:
         code = rank_to_codes_map[min_rank]
@@ -36,8 +32,25 @@ def plus_range(hand):
     return result
 
 
+def is_plus_range(hand_range):
+    return '+' in hand_range
+
+
+def plus_range(hand_range):
+    return min_to_max('AA', hand_range)
+
+
+def is_dash_range(hand_range):
+    return '-' in hand_range
+
+
 def single_hand(hand_range):
     return hand_range
+
+
+def dash_range(hand_range):
+    top, bottom = hand_range.split('-')
+    return min_to_max(top, bottom)
 
 
 def parse_sub_range(sub_range):
@@ -45,6 +58,9 @@ def parse_sub_range(sub_range):
 
     if is_plus_range(sub_range):
         for i in plus_range(sub_range.strip('+')):
+            result.add(i)
+    elif is_dash_range(sub_range):
+        for i in dash_range(sub_range):
             result.add(i)
     else:
         result.add(single_hand(sub_range))
