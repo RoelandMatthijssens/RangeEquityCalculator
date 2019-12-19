@@ -32,10 +32,19 @@ def plus_range(hand):
     return result
 
 
+def parse_sub_range(sub_range):
+    result = set()
+
+    for i in plus_range(sub_range.strip('+')):
+        result.add(i)
+
+    return result
+
+
 def parse_range(hand_range):
     result = set()
 
-    for i in plus_range(hand_range.strip('+')):
-        result.add(i)
+    for sub_range in hand_range.split(','):
+        result = result.union(parse_sub_range(sub_range.strip()))
 
     return sorted(list(result), key=cmp_to_key(compare_rank))
