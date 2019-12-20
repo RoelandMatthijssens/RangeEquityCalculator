@@ -34,6 +34,13 @@ def test_dash_notation(hand_range, expected):
 
 
 @pytest.mark.parametrize("hand_range,expected", [
+    ('AA, KK, A2, K5', ['AA', 'A2', 'KK', 'K5']),
+])
+def test_ordering(hand_range, expected):
+    assert parse_range(hand_range) == expected
+
+
+@pytest.mark.parametrize("hand_range,expected", [
     ('22-55, QQ+, A9+, 95', ['AA', 'AK', 'AQ', 'AJ', 'AT', 'A9', 'KK', 'QQ', '95', '55', '44', '33', '22']),
 ])
 def test_range_combinations(hand_range, expected):
