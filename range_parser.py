@@ -22,16 +22,26 @@ def compare_rank(h1, h2):
 
 
 def min_to_max(a, b):
+    if a[0] == a[1] and b[0] == b[1]:
+        return min_to_max_pairs(a, b)
+    else:
+        return min_to_max_non_pairs(a, b)
+
+
+def min_to_max_pairs(a, b):
     rank_a = codes_to_rank_map[a[0]]
     rank_b = codes_to_rank_map[b[0]]
     top = max(rank_a, rank_b)
     bottom = min(rank_a, rank_b)
-    result = []
-    while bottom <= top:
-        code = rank_to_codes_map[bottom]
-        result.append(code + code)
-        bottom += 1
-    return result
+    return [rank_to_codes_map[i] * 2 for i in range(bottom, top + 1)]
+
+
+def min_to_max_non_pairs(a, b):
+    rank_12 = codes_to_rank_map[a[1]]
+    rank_22 = codes_to_rank_map[b[1]]
+    min_rank_2 = min(rank_12, rank_22)
+    max_rank_2 = max(rank_12, rank_22)
+    return [a[0] + rank_to_codes_map[i] for i in range(min_rank_2, max_rank_2 + 1)]
 
 
 def is_plus_range(hand_range):
@@ -39,7 +49,19 @@ def is_plus_range(hand_range):
 
 
 def plus_range(hand_range):
-    return min_to_max('AA', hand_range)
+    a = hand_range[0]
+    b = hand_range[1]
+    if a == b:
+        return min_to_max('AA', hand_range)
+    else:
+        rank_a = codes_to_rank_map[a]
+        rank_b = codes_to_rank_map[b]
+        highest_card = max(rank_a, rank_b)
+        lowest_card = min(rank_a, rank_b)
+        # A7 gets transformed to AK-A7
+        top_hand = rank_to_codes_map[highest_card] + rank_to_codes_map[highest_card - 1]
+        bottom_hand = rank_to_codes_map[highest_card] + rank_to_codes_map[lowest_card]
+        return min_to_max(bottom_hand, top_hand)
 
 
 def is_dash_range(hand_range):
@@ -68,6 +90,7 @@ def parse_sub_range(sub_range):
         result.add(single_hand(sub_range))
 
     return result
+
 
 def parse_range(hand_range):
     result = set()
