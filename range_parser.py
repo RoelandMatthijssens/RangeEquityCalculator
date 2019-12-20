@@ -21,14 +21,16 @@ def compare_rank(h1, h2):
     if h22 > h12: return 1
 
 
-def min_to_max(top, bottom):
-    max_rank = codes_to_rank_map[top[0]]
-    min_rank = codes_to_rank_map[bottom[0]]
+def min_to_max(a, b):
+    rank_a = codes_to_rank_map[a[0]]
+    rank_b = codes_to_rank_map[b[0]]
+    top = max(rank_a, rank_b)
+    bottom = min(rank_a, rank_b)
     result = []
-    while min_rank <= max_rank:
-        code = rank_to_codes_map[min_rank]
+    while bottom <= top:
+        code = rank_to_codes_map[bottom]
         result.append(code + code)
-        min_rank += 1
+        bottom += 1
     return result
 
 
