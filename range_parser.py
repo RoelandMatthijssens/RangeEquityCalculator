@@ -69,7 +69,9 @@ def is_dash_range(hand_range):
 
 
 def single_hand(hand_range):
-    return hand_range
+    low_card = min(codes_to_rank_map[hand_range[0]], codes_to_rank_map[hand_range[1]])
+    high_card = max(codes_to_rank_map[hand_range[0]], codes_to_rank_map[hand_range[1]])
+    return rank_to_codes_map[high_card] + rank_to_codes_map[low_card]
 
 
 def dash_range(hand_range):
