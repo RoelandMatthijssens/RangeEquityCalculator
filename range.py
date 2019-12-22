@@ -22,17 +22,13 @@ class Range():
 
     def plus_range(self):
         hand = Hand(self.range_string.strip('+'))
-        a = self.range_string.strip('+')
-        rank_11 = Hand.codes_to_rank_map[a[0]]
-        rank_12 = Hand.codes_to_rank_map[a[1]]
         if hand.is_pair():
-            return [hand.value for hand in self.min_to_max_hands(Hand('AA'), hand)]
+            hands = self.min_to_max_hands(Hand('AA'), hand)
         else:
-            highest_card = max(rank_11, rank_12)
-            lowest_card = min(rank_11, rank_12)
-            top_hand = Hand.rank_to_codes_map[highest_card] + Hand.rank_to_codes_map[highest_card - 1]
-            bottom_hand = Hand.rank_to_codes_map[highest_card] + Hand.rank_to_codes_map[lowest_card]
-            return self.min_to_max(bottom_hand, top_hand)
+            top_hand = Hand.from_ranks(hand.max_rank, hand.max_rank - 1)
+            bottom_hand = Hand.from_ranks(hand.max_rank, hand.min_rank)
+            hands = self.min_to_max_hands(bottom_hand, top_hand)
+        return [hand.value for hand in hands]
 
     def dash_range(self):
         top, bottom = self.range_string.split('-')
@@ -48,8 +44,8 @@ class Range():
     def min_to_max_hands(self, a, b):
         if a.is_pair() and b.is_pair():
             return self.min_to_max_pairs_hands(a, b)
-        elif a[0] == b[0] and a[1] != b[1]:
-            return self.min_to_max_non_pairs(a, b)
+        elif a.max_rank == b.max_rank and a.min_rank != b.min_rank:
+            return self.min_to_max_non_pairs_hands(a, b)
         else:
             return self.min_to_max_connectors_and_gappers(a, b)
 
@@ -95,3 +91,9 @@ class Range():
         min_rank_2 = min(rank_12, rank_22)
         max_rank_2 = max(rank_12, rank_22)
         return [a[0] + Hand.rank_to_codes_map[i] for i in range(min_rank_2, max_rank_2 + 1)]
+
+    @staticmethod
+    def min_to_max_non_pairs_hands(a, b):
+        min_rank_2 = min(a.min_rank, b.min_rank)
+        max_rank_2 = max(a.min_rank, b.min_rank)
+        return [Hand.from_ranks(a.max_rank, i) for i in range(min_rank_2, max_rank_2 + 1)]
