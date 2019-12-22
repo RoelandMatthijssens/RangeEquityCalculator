@@ -10,15 +10,15 @@ rank_to_codes_map = {
 }
 
 
-def compare_rank(h1, h2):
-    h11 = codes_to_rank_map[h1[0]]
-    h12 = codes_to_rank_map[h1[1]]
-    h21 = codes_to_rank_map[h2[0]]
-    h22 = codes_to_rank_map[h2[1]]
-    if h11 > h21: return -1
-    if h21 > h11: return 1
-    if h12 > h22: return -1
-    if h22 > h12: return 1
+def compare_rank(a, b):
+    rank_11 = codes_to_rank_map[a[0]]
+    rank_12 = codes_to_rank_map[a[1]]
+    rank_21 = codes_to_rank_map[b[0]]
+    rank_22 = codes_to_rank_map[b[1]]
+    if rank_11 > rank_21: return -1
+    if rank_21 > rank_11: return 1
+    if rank_12 > rank_22: return -1
+    if rank_22 > rank_12: return 1
 
 
 def min_to_max_connectors_and_gappers(a, b):
@@ -63,16 +63,14 @@ def is_plus_range(hand_range):
     return '+' in hand_range
 
 
-def plus_range(hand_range):
-    a = hand_range[0]
-    b = hand_range[1]
-    if a == b:
-        return min_to_max('AA', hand_range)
+def plus_range(a):
+    rank_11 = codes_to_rank_map[a[0]]
+    rank_12 = codes_to_rank_map[a[1]]
+    if rank_11 == rank_12:
+        return min_to_max('AA', a)
     else:
-        rank_a = codes_to_rank_map[a]
-        rank_b = codes_to_rank_map[b]
-        highest_card = max(rank_a, rank_b)
-        lowest_card = min(rank_a, rank_b)
+        highest_card = max(rank_11, rank_12)
+        lowest_card = min(rank_11, rank_12)
         top_hand = rank_to_codes_map[highest_card] + rank_to_codes_map[highest_card - 1]
         bottom_hand = rank_to_codes_map[highest_card] + rank_to_codes_map[lowest_card]
         return min_to_max(bottom_hand, top_hand)
@@ -82,9 +80,11 @@ def is_dash_range(hand_range):
     return '-' in hand_range
 
 
-def single_hand(hand_range):
-    low_card = min(codes_to_rank_map[hand_range[0]], codes_to_rank_map[hand_range[1]])
-    high_card = max(codes_to_rank_map[hand_range[0]], codes_to_rank_map[hand_range[1]])
+def single_hand(a):
+    rank_11 = codes_to_rank_map[a[0]]
+    rank_12 = codes_to_rank_map[a[1]]
+    low_card = min(rank_11, rank_12)
+    high_card = max(rank_11, rank_12)
     return rank_to_codes_map[high_card] + rank_to_codes_map[low_card]
 
 
