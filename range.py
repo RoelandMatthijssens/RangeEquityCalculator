@@ -1,13 +1,7 @@
-class Range():
-    codes_to_rank_map = {
-        '2': 0, '3': 1, '4': 2, '5': 3, '6': 4, '7': 5, '8': 6, '9': 7,
-        'T': 8, 'J': 9, 'Q': 10, 'K': 11, 'A': 12
-    }
-    rank_to_codes_map = {
-        0: '2', 1: '3', 2: '4', 3: '5', 4: '6', 5: '7', 6: '8', 7: '9',
-        8: 'T', 9: 'J', 10: 'Q', 11: 'K', 12: 'A'
-    }
+from .hand import Hand
 
+
+class Range():
     def __init__(self, hand_range):
         self.range_string = hand_range
         self.hands = self.explode_range()
@@ -27,16 +21,17 @@ class Range():
         return '-' in self.range_string
 
     def plus_range(self):
+        hand = Hand(self.range_string.strip('+'))
         a = self.range_string.strip('+')
-        rank_11 = Range.codes_to_rank_map[a[0]]
-        rank_12 = Range.codes_to_rank_map[a[1]]
-        if rank_11 == rank_12:
+        rank_11 = Hand.codes_to_rank_map[a[0]]
+        rank_12 = Hand.codes_to_rank_map[a[1]]
+        if hand.is_pair():
             return self.min_to_max('AA', a)
         else:
             highest_card = max(rank_11, rank_12)
             lowest_card = min(rank_11, rank_12)
-            top_hand = Range.rank_to_codes_map[highest_card] + Range.rank_to_codes_map[highest_card - 1]
-            bottom_hand = Range.rank_to_codes_map[highest_card] + Range.rank_to_codes_map[lowest_card]
+            top_hand = Hand.rank_to_codes_map[highest_card] + Hand.rank_to_codes_map[highest_card - 1]
+            bottom_hand = Hand.rank_to_codes_map[highest_card] + Hand.rank_to_codes_map[lowest_card]
             return self.min_to_max(bottom_hand, top_hand)
 
     def dash_range(self):
@@ -44,11 +39,11 @@ class Range():
         return self.min_to_max(top, bottom)
 
     def single_hand(self):
-        rank_11 = Range.codes_to_rank_map[self.range_string[0]]
-        rank_12 = Range.codes_to_rank_map[self.range_string[1]]
+        rank_11 = Hand.codes_to_rank_map[self.range_string[0]]
+        rank_12 = Hand.codes_to_rank_map[self.range_string[1]]
         low_card = min(rank_11, rank_12)
         high_card = max(rank_11, rank_12)
-        return Range.rank_to_codes_map[high_card] + Range.rank_to_codes_map[low_card]
+        return Hand.rank_to_codes_map[high_card] + Hand.rank_to_codes_map[low_card]
 
     def min_to_max(self, a, b):
         if a[0] == a[1] and b[0] == b[1]:
@@ -60,12 +55,12 @@ class Range():
 
     @staticmethod
     def min_to_max_connectors_and_gappers(a, b):
-        rank_11 = Range.codes_to_rank_map[a[0]]
-        rank_21 = Range.codes_to_rank_map[b[0]]
-        rank_22 = Range.codes_to_rank_map[b[1]]
+        rank_11 = Hand.codes_to_rank_map[a[0]]
+        rank_21 = Hand.codes_to_rank_map[b[0]]
+        rank_22 = Hand.codes_to_rank_map[b[1]]
         result = []
         while rank_11 >= rank_21:
-            hand = Range.rank_to_codes_map[rank_21] + Range.rank_to_codes_map[rank_22]
+            hand = Hand.rank_to_codes_map[rank_21] + Hand.rank_to_codes_map[rank_22]
             result.append(hand)
             rank_21 += 1
             rank_22 += 1
@@ -73,16 +68,16 @@ class Range():
 
     @staticmethod
     def min_to_max_pairs(a, b):
-        rank_a = Range.codes_to_rank_map[a[0]]
-        rank_b = Range.codes_to_rank_map[b[0]]
+        rank_a = Hand.codes_to_rank_map[a[0]]
+        rank_b = Hand.codes_to_rank_map[b[0]]
         top = max(rank_a, rank_b)
         bottom = min(rank_a, rank_b)
-        return [Range.rank_to_codes_map[i] * 2 for i in range(bottom, top + 1)]
+        return [Hand.rank_to_codes_map[i] * 2 for i in range(bottom, top + 1)]
 
     @staticmethod
     def min_to_max_non_pairs(a, b):
-        rank_12 = Range.codes_to_rank_map[a[1]]
-        rank_22 = Range.codes_to_rank_map[b[1]]
+        rank_12 = Hand.codes_to_rank_map[a[1]]
+        rank_22 = Hand.codes_to_rank_map[b[1]]
         min_rank_2 = min(rank_12, rank_22)
         max_rank_2 = max(rank_12, rank_22)
-        return [a[0] + Range.rank_to_codes_map[i] for i in range(min_rank_2, max_rank_2 + 1)]
+        return [a[0] + Hand.rank_to_codes_map[i] for i in range(min_rank_2, max_rank_2 + 1)]
