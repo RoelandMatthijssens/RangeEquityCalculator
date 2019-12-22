@@ -73,7 +73,6 @@ def plus_range(hand_range):
         rank_b = codes_to_rank_map[b]
         highest_card = max(rank_a, rank_b)
         lowest_card = min(rank_a, rank_b)
-        # A7 gets transformed to AK-A7
         top_hand = rank_to_codes_map[highest_card] + rank_to_codes_map[highest_card - 1]
         bottom_hand = rank_to_codes_map[highest_card] + rank_to_codes_map[lowest_card]
         return min_to_max(bottom_hand, top_hand)
@@ -95,18 +94,12 @@ def dash_range(hand_range):
 
 
 def parse_sub_range(sub_range):
-    result = set()
-
     if is_plus_range(sub_range):
-        for i in plus_range(sub_range.strip('+')):
-            result.add(i)
+        return plus_range(sub_range.strip('+'))
     elif is_dash_range(sub_range):
-        for i in dash_range(sub_range):
-            result.add(i)
+        return dash_range(sub_range)
     else:
-        result.add(single_hand(sub_range))
-
-    return result
+        return [single_hand(sub_range)]
 
 
 def parse_range(hand_range):
