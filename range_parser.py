@@ -21,11 +21,26 @@ def compare_rank(h1, h2):
     if h22 > h12: return 1
 
 
+def min_to_max_connectors_and_gappers(a, b):
+    rank_11 = codes_to_rank_map[a[0]]
+    rank_21 = codes_to_rank_map[b[0]]
+    rank_22 = codes_to_rank_map[b[1]]
+    result = []
+    while rank_11 >= rank_21:
+        hand = rank_to_codes_map[rank_21] + rank_to_codes_map[rank_22]
+        result.append(hand)
+        rank_21 += 1
+        rank_22 += 1
+    return result
+
+
 def min_to_max(a, b):
     if a[0] == a[1] and b[0] == b[1]:
         return min_to_max_pairs(a, b)
-    else:
+    elif a[0] == b[0] and a[1] != b[1]:
         return min_to_max_non_pairs(a, b)
+    else:
+        return min_to_max_connectors_and_gappers(a, b)
 
 
 def min_to_max_pairs(a, b):

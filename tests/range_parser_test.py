@@ -10,6 +10,9 @@ from ..range_parser import parse_range
     ('AT+', ['AK', 'AQ', 'AJ', 'AT']),
     ('KT+', ['KQ', 'KJ', 'KT']),
     ('AT+, KT+', ['AK', 'AQ', 'AJ', 'AT', 'KQ', 'KJ', 'KT']),
+    ('AK-JT', ['AK', 'KQ', 'QJ', 'JT']),
+    ('76-32', ['76', '65', '54', '43', '32']),
+    ('AQ-97', ['AQ', 'KJ', 'QT', 'J9', 'T8', '97']),
 ])
 def test_plus_notation(hand_range, expected):
     assert parse_range(hand_range) == expected
