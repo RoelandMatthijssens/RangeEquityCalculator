@@ -28,6 +28,7 @@ def test_single_combos(hand_range, expected):
     ('QQ-TT', ['QQ', 'JJ', 'TT']),
     ('TT-QQ', ['QQ', 'JJ', 'TT']),
     ('AA-TT, 22-55', ['AA', 'KK', 'QQ', 'JJ', 'TT', '55', '44', '33', '22']),
+    ('AK-AT, KQ-KJ', ['AK', 'AQ', 'AJ', 'AT', 'KQ', 'KJ']),
 ])
 def test_dash_notation(hand_range, expected):
     assert parse_range(hand_range) == expected
