@@ -26,7 +26,7 @@ class Range():
         rank_11 = Hand.codes_to_rank_map[a[0]]
         rank_12 = Hand.codes_to_rank_map[a[1]]
         if hand.is_pair():
-            return self.min_to_max('AA', a)
+            return [hand.value for hand in self.min_to_max_hands(Hand('AA'), hand)]
         else:
             highest_card = max(rank_11, rank_12)
             lowest_card = min(rank_11, rank_12)
@@ -44,6 +44,14 @@ class Range():
         low_card = min(rank_11, rank_12)
         high_card = max(rank_11, rank_12)
         return Hand.rank_to_codes_map[high_card] + Hand.rank_to_codes_map[low_card]
+
+    def min_to_max_hands(self, a, b):
+        if a.is_pair() and b.is_pair():
+            return self.min_to_max_pairs_hands(a, b)
+        elif a[0] == b[0] and a[1] != b[1]:
+            return self.min_to_max_non_pairs(a, b)
+        else:
+            return self.min_to_max_connectors_and_gappers(a, b)
 
     def min_to_max(self, a, b):
         if a[0] == a[1] and b[0] == b[1]:
@@ -73,6 +81,12 @@ class Range():
         top = max(rank_a, rank_b)
         bottom = min(rank_a, rank_b)
         return [Hand.rank_to_codes_map[i] * 2 for i in range(bottom, top + 1)]
+
+    @staticmethod
+    def min_to_max_pairs_hands(a, b):
+        top = max(a.max_rank, b.max_rank)
+        bottom = min(a.max_rank, b.max_rank)
+        return [Hand.from_ranks(i, i) for i in range(bottom, top + 1)]
 
     @staticmethod
     def min_to_max_non_pairs(a, b):
