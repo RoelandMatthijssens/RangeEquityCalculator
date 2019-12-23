@@ -1,6 +1,6 @@
 import pytest
 
-from ..range_parser import parse_range
+from range_parser import parse_range
 
 
 @pytest.mark.parametrize("hand_range,expected", [
