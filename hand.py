@@ -12,6 +12,12 @@ class Hand():
         if hand_string:
             self.from_codes(hand_string)
 
+    def __eq__(self, other):
+        return Hand.compare(self, other) == 0
+
+    def __hash__(self):
+        return hash(self.value)
+
     @classmethod
     def from_ranks(cls, a, b):
         return cls(cls.rank_to_codes_map[a] + cls.rank_to_codes_map[b])
@@ -30,3 +36,16 @@ class Hand():
     @property
     def value(self):
         return self.max_code + self.min_code
+
+    @staticmethod
+    def compare(a, b):
+        if a.max_rank > b.max_rank:
+            return -1
+        if b.max_rank > a.max_rank:
+            return 1
+        if a.min_rank > b.min_rank:
+            return -1
+        if b.min_rank > a.min_rank:
+            return 1
+        else:
+            return 0
