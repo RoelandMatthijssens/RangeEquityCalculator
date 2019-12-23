@@ -22,7 +22,7 @@ class Range():
 
     def plus_range(self):
         hand = Hand(self.range_string.strip('+'))
-        if hand.is_pair():
+        if hand.is_pair:
             hands = self.min_to_max_hands(Hand('AA'), hand)
         else:
             top_hand = Hand.from_ranks(hand.max_rank, hand.max_rank - 1)
@@ -38,7 +38,7 @@ class Range():
         return Hand(self.range_string)
 
     def min_to_max_hands(self, a, b):
-        if a.is_pair() and b.is_pair():
+        if a.is_pair and b.is_pair:
             return self.min_to_max_pairs(a, b)
         elif a.max_rank == b.max_rank and a.min_rank != b.min_rank:
             return self.min_to_max_non_pairs(a, b)
