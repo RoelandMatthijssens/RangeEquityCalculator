@@ -35,11 +35,7 @@ class Range():
         return [hand.value for hand in self.min_to_max_hands(top, bottom)]
 
     def single_hand(self):
-        rank_11 = Hand.codes_to_rank_map[self.range_string[0]]
-        rank_12 = Hand.codes_to_rank_map[self.range_string[1]]
-        low_card = min(rank_11, rank_12)
-        high_card = max(rank_11, rank_12)
-        return Hand.rank_to_codes_map[high_card] + Hand.rank_to_codes_map[low_card]
+        return Hand(self.range_string).value
 
     def min_to_max_hands(self, a, b):
         if a.is_pair() and b.is_pair():

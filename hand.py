@@ -17,10 +17,12 @@ class Hand():
         return cls(cls.rank_to_codes_map[a] + cls.rank_to_codes_map[b])
 
     def from_codes(self, codes):
-        self.max_rank = Hand.codes_to_rank_map[codes[0]]
-        self.min_rank = Hand.codes_to_rank_map[codes[1]]
-        self.max_code = codes[0]
-        self.min_code = codes[1]
+        rank_1 = Hand.codes_to_rank_map[codes[0]]
+        rank_2 = Hand.codes_to_rank_map[codes[1]]
+        self.max_rank = max(rank_1, rank_2)
+        self.min_rank = min(rank_1, rank_2)
+        self.max_code = Hand.rank_to_codes_map[self.max_rank]
+        self.min_code = Hand.rank_to_codes_map[self.min_rank]
 
     def is_pair(self):
         return self.max_rank == self.min_rank
