@@ -1,7 +1,7 @@
 from functools import cmp_to_key, reduce
 
-from .hand import Hand
-from .range import Range
+from hand import Hand
+from range import Range
 
 
 def parse_range(ranges):
