@@ -6,6 +6,15 @@ class Suitedness(Enum):
     SUITED = 's'
     OFFSUIT = 'o'
 
+    @staticmethod
+    def compare(a, b):
+        if a == Suitedness.SUITED and b == Suitedness.OFFSUIT:
+            return -1
+        elif a == Suitedness.OFFSUIT and b == Suitedness.SUITED:
+            return 1
+        else:
+            return 0
+
 
 class Hand():
     codes_to_rank_map = {
@@ -75,7 +84,7 @@ class Hand():
         if b.min_rank > a.min_rank:
             return 1
         else:
-            return 0
+            return Suitedness.compare(a.suitedness, b.suitedness)
 
     @staticmethod
     def __parse_hand_string(hand_string):
