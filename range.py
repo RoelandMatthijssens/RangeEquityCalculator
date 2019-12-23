@@ -28,14 +28,14 @@ class Range():
             top_hand = Hand.from_ranks(hand.max_rank, hand.max_rank - 1)
             bottom_hand = Hand.from_ranks(hand.max_rank, hand.min_rank)
             hands = self.min_to_max_hands(bottom_hand, top_hand)
-        return [hand.value for hand in hands]
+        return hands
 
     def dash_range(self):
         top, bottom = [Hand(i) for i in self.range_string.split('-')]
-        return [hand.value for hand in self.min_to_max_hands(top, bottom)]
+        return self.min_to_max_hands(top, bottom)
 
     def single_hand(self):
-        return Hand(self.range_string).value
+        return Hand(self.range_string)
 
     def min_to_max_hands(self, a, b):
         if a.is_pair() and b.is_pair():

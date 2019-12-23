@@ -10,3 +10,7 @@ def compare_rank(a, b):
     if rank_21 > rank_11: return 1
     if rank_12 > rank_22: return -1
     if rank_22 > rank_12: return 1
+
+
+def flatten(l):
+    return [i for sub_l in l for i in sub_l]

@@ -1,6 +1,6 @@
 from functools import cmp_to_key, reduce
 
-from .helper_methods import compare_rank
+from .helper_methods import compare_rank, flatten
 from .range import Range
 
 
@@ -14,8 +14,8 @@ def compose(*functions):
 
 
 def parse_range(ranges):
-    hands = set()
-    for sub_range in ranges.split(','):
-        hands = hands.union(Range(sub_range.strip()).hands)
-
-    return sorted(list(hands), key=cmp_to_key(compare_rank))
+    ranges = [Range(i.strip()) for i in ranges.split(',')]
+    hands = flatten([hand_range.hands for hand_range in ranges])
+    unique_hands = list(set([hand.value for hand in hands]))
+    sorted_hands = sorted(unique_hands, key=cmp_to_key(compare_rank))
+    return sorted_hands
