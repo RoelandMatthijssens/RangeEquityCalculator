@@ -49,53 +49,16 @@ class Range():
         else:
             return self.min_to_max_connectors_and_gappers_hands(a, b)
 
-    def min_to_max(self, a, b):
-        if a[0] == a[1] and b[0] == b[1]:
-            return self.min_to_max_pairs(a, b)
-        elif a[0] == b[0] and a[1] != b[1]:
-            return self.min_to_max_non_pairs(a, b)
-        else:
-            return self.min_to_max_connectors_and_gappers(a, b)
-
-    @staticmethod
-    def min_to_max_connectors_and_gappers(a, b):
-        rank_11 = Hand.codes_to_rank_map[a[0]]
-        rank_21 = Hand.codes_to_rank_map[b[0]]
-        rank_22 = Hand.codes_to_rank_map[b[1]]
-        result = []
-        while rank_11 >= rank_21:
-            hand = Hand.rank_to_codes_map[rank_21] + Hand.rank_to_codes_map[rank_22]
-            result.append(hand)
-            rank_21 += 1
-            rank_22 += 1
-        return result
-
     @staticmethod
     def min_to_max_connectors_and_gappers_hands(a, b):
         delta = b.max_rank - b.min_rank
         return [Hand.from_ranks(i, i - delta) for i in range(b.max_rank, a.max_rank + 1)]
 
     @staticmethod
-    def min_to_max_pairs(a, b):
-        rank_a = Hand.codes_to_rank_map[a[0]]
-        rank_b = Hand.codes_to_rank_map[b[0]]
-        top = max(rank_a, rank_b)
-        bottom = min(rank_a, rank_b)
-        return [Hand.rank_to_codes_map[i] * 2 for i in range(bottom, top + 1)]
-
-    @staticmethod
     def min_to_max_pairs_hands(a, b):
         top = max(a.max_rank, b.max_rank)
         bottom = min(a.max_rank, b.max_rank)
         return [Hand.from_ranks(i, i) for i in range(bottom, top + 1)]
-
-    @staticmethod
-    def min_to_max_non_pairs(a, b):
-        rank_12 = Hand.codes_to_rank_map[a[1]]
-        rank_22 = Hand.codes_to_rank_map[b[1]]
-        min_rank_2 = min(rank_12, rank_22)
-        max_rank_2 = max(rank_12, rank_22)
-        return [a[0] + Hand.rank_to_codes_map[i] for i in range(min_rank_2, max_rank_2 + 1)]
 
     @staticmethod
     def min_to_max_non_pairs_hands(a, b):
