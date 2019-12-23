@@ -1,16 +1,7 @@
-from functools import cmp_to_key, reduce
+from functools import cmp_to_key
 
 from .helper_methods import compare_rank, flatten
 from .range import Range
-
-
-def compose(*functions):
-    """compose many functions into one"""
-
-    def compose_two(f, g):
-        return lambda x: f(g(x))
-
-    return reduce(compose_two, functions, lambda x: x)
 
 
 def parse_range(ranges):
