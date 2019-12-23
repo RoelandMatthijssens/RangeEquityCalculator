@@ -43,25 +43,25 @@ class Range():
 
     def min_to_max_hands(self, a, b):
         if a.is_pair() and b.is_pair():
-            return self.min_to_max_pairs_hands(a, b)
+            return self.min_to_max_pairs(a, b)
         elif a.max_rank == b.max_rank and a.min_rank != b.min_rank:
-            return self.min_to_max_non_pairs_hands(a, b)
+            return self.min_to_max_non_pairs(a, b)
         else:
-            return self.min_to_max_connectors_and_gappers_hands(a, b)
+            return self.min_to_max_connectors_and_gappers(a, b)
 
     @staticmethod
-    def min_to_max_connectors_and_gappers_hands(a, b):
+    def min_to_max_connectors_and_gappers(a, b):
         delta = b.max_rank - b.min_rank
         return [Hand.from_ranks(i, i - delta) for i in range(b.max_rank, a.max_rank + 1)]
 
     @staticmethod
-    def min_to_max_pairs_hands(a, b):
+    def min_to_max_pairs(a, b):
         top = max(a.max_rank, b.max_rank)
         bottom = min(a.max_rank, b.max_rank)
         return [Hand.from_ranks(i, i) for i in range(bottom, top + 1)]
 
     @staticmethod
-    def min_to_max_non_pairs_hands(a, b):
+    def min_to_max_non_pairs(a, b):
         min_rank_2 = min(a.min_rank, b.min_rank)
         max_rank_2 = max(a.min_rank, b.min_rank)
         return [Hand.from_ranks(a.max_rank, i) for i in range(min_rank_2, max_rank_2 + 1)]
