@@ -31,8 +31,8 @@ class Range():
         return [hand.value for hand in hands]
 
     def dash_range(self):
-        top, bottom = self.range_string.split('-')
-        return self.min_to_max(top, bottom)
+        top, bottom = [Hand(i) for i in self.range_string.split('-')]
+        return [hand.value for hand in self.min_to_max_hands(top, bottom)]
 
     def single_hand(self):
         rank_11 = Hand.codes_to_rank_map[self.range_string[0]]
@@ -47,7 +47,7 @@ class Range():
         elif a.max_rank == b.max_rank and a.min_rank != b.min_rank:
             return self.min_to_max_non_pairs_hands(a, b)
         else:
-            return self.min_to_max_connectors_and_gappers(a, b)
+            return self.min_to_max_connectors_and_gappers_hands(a, b)
 
     def min_to_max(self, a, b):
         if a[0] == a[1] and b[0] == b[1]:
@@ -69,6 +69,11 @@ class Range():
             rank_21 += 1
             rank_22 += 1
         return result
+
+    @staticmethod
+    def min_to_max_connectors_and_gappers_hands(a, b):
+        delta = b.max_rank - b.min_rank
+        return [Hand.from_ranks(i, i - delta) for i in range(b.max_rank, a.max_rank + 1)]
 
     @staticmethod
     def min_to_max_pairs(a, b):
