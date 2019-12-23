@@ -8,11 +8,16 @@ class Range():
 
     def explode_range(self):
         if self.is_plus_range():
-            return self.plus_range()
+            hands = self.plus_range()
         elif self.is_dash_range():
-            return self.dash_range()
+            hands = self.dash_range()
         else:
-            return [self.single_hand()]
+            hands = [self.single_hand()]
+
+        result = []
+        for hand in hands:
+            result.extend(hand.variants)
+        return result
 
     def is_plus_range(self):
         return '+' in self.range_string
@@ -25,8 +30,8 @@ class Range():
         if hand.is_pair:
             hands = self.min_to_max_hands(Hand('AA'), hand)
         else:
-            top_hand = Hand.from_ranks(hand.max_rank, hand.max_rank - 1)
-            bottom_hand = Hand.from_ranks(hand.max_rank, hand.min_rank)
+            top_hand = Hand.from_ranks(hand.max_rank, hand.max_rank - 1, hand.suitedness)
+            bottom_hand = Hand.from_ranks(hand.max_rank, hand.min_rank, hand.suitedness)
             hands = self.min_to_max_hands(bottom_hand, top_hand)
         return hands
 
@@ -48,7 +53,7 @@ class Range():
     @staticmethod
     def min_to_max_connectors_and_gappers(a, b):
         delta = b.max_rank - b.min_rank
-        return [Hand.from_ranks(i, i - delta) for i in range(b.max_rank, a.max_rank + 1)]
+        return [Hand.from_ranks(i, i - delta, a.suitedness) for i in range(b.max_rank, a.max_rank + 1)]
 
     @staticmethod
     def min_to_max_pairs(a, b):
@@ -60,4 +65,4 @@ class Range():
     def min_to_max_non_pairs(a, b):
         min_rank_2 = min(a.min_rank, b.min_rank)
         max_rank_2 = max(a.min_rank, b.min_rank)
-        return [Hand.from_ranks(a.max_rank, i) for i in range(min_rank_2, max_rank_2 + 1)]
+        return [Hand.from_ranks(a.max_rank, i, a.suitedness) for i in range(min_rank_2, max_rank_2 + 1)]
