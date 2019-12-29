@@ -103,3 +103,8 @@ class Hand:
             Hand.rank_to_codes_map[min_rank],
             suite
         ]
+
+    def get_combos(self):
+        SUITES = ['s', 'h', 'd', 'c', ]
+        combos = [(self.max_code + i, self.min_code + j) for i in SUITES for j in SUITES]
+        return combos
