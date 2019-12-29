@@ -1,4 +1,5 @@
 from enum import Enum
+from itertools import permutations
 
 
 class Suitedness(Enum):
@@ -108,6 +109,10 @@ class Hand:
         SUITES = ['s', 'h', 'd', 'c', ]
         if self.is_suited:
             combos = [(self.max_code + i, self.min_code + i) for i in SUITES]
+        elif self.is_pair:
+            suites = set([tuple(sorted(i, key=lambda x: SUITES.index(x))) for i in list(permutations(SUITES, 2))])
+            combos = [(self.max_code + i, self.min_code + j) for i, j in suites]
         else:
             combos = [(self.max_code + i, self.min_code + j) for i in SUITES for j in SUITES]
+
         return combos
