@@ -8,6 +8,7 @@ from hand import Hand
             ('Ah', 'Ks'), ('Ah', 'Kh'), ('Ah', 'Kd'), ('Ah', 'Kc'),
             ('Ad', 'Ks'), ('Ad', 'Kh'), ('Ad', 'Kd'), ('Ad', 'Kc'),
             ('Ac', 'Ks'), ('Ac', 'Kh'), ('Ac', 'Kd'), ('Ac', 'Kc'), ]),
+    ('AKs', [('As', 'Ks'), ('Ah', 'Kh'), ('Ad', 'Kd'), ('Ac', 'Kc'), ]),
 ])
 def test_get_variants(hand_string, expected):
     combos = Hand(hand_string).get_combos()
