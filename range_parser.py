@@ -5,15 +5,20 @@ from hand import Hand
 from range import Range
 
 
-def parse_range(ranges):
-    ranges = [Range(i.strip()) for i in ranges.split(',')]
+def range_to_hands(hand_ranges):
+    ranges = [Range(i.strip()) for i in hand_ranges.split(',')]
     hands = reduce(list.__add__, [hand_range.hands for hand_range in ranges])
     unique_hands = list(set(hands))
     sorted_hands = sorted(unique_hands, key=cmp_to_key(Hand.compare))
-    return [hand.value for hand in sorted_hands]
+    return sorted_hands
+
+
+def parse_range(ranges):
+    hands = range_to_hands(ranges)
+    return [hand.value for hand in hands]
 
 
 if __name__ == '__main__':
     input_range = parse_args()
-    hands = parse_range(input_range)
-    print(hands)
+    all_hands = parse_range(input_range)
+    print(all_hands)

@@ -105,7 +105,9 @@ class Hand:
             suite
         ]
 
-    def get_combos(self, dead_cards):
+    def get_combos(self, dead_cards=None):
+        if dead_cards is None:
+            dead_cards = []
         SUITES = ['s', 'h', 'd', 'c', ]
         if self.is_suited:
             combos = [(self.max_code + i, self.min_code + i) for i in SUITES]
